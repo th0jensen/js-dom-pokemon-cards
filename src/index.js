@@ -25,6 +25,7 @@ function addPokemonCards() {
     const pokemonCover = document.createElement('img')
     pokemonCover.classList.add('card--img')
     pokemonCover.src = pokemon.sprites.other['official-artwork'].front_default
+    pokemonCover.width = 256
 
     // Create the list where all the stats will be shown
     const pokemonStats = document.createElement('ul')
