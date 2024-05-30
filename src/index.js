@@ -14,17 +14,19 @@ function addPokemonCards() {
     const card = document.createElement('li')
     card.classList.add('card')
 
-    // Create the header for the games list
-    const pokemonGamesHeader = document.createElement('h4')
-    pokemonGamesHeader.classList.add('card--games--header')
-    pokemonGamesHeader.innerText = "Featured Games:"
+    // Define the functions in an array
+    const functions = [
+      getPokemonName,
+      getPokemonCover,
+      getPokemonStats,
+      getPokemonGamesHeader,
+      getPokemonGames
+    ]
 
-    // Append all the items to the card
-    card.appendChild(getPokemonName(pokemon))
-    card.appendChild(getPokemonCover(pokemon))
-    card.appendChild(getPokemonStats(pokemon))
-    card.appendChild(pokemonGamesHeader)
-    card.appendChild(getPokemonGames(pokemon))
+    // Loop through the functions and append them to the card
+    for (let i = 0; i < functions.length; i++) {
+      card.appendChild(functions[i](pokemon))
+    }
 
     // Append the card to the HTML page
     cardsUL.appendChild(card)
@@ -63,6 +65,14 @@ function getPokemonStats(pokemon) {
     pokemonStats.appendChild(pokemonStatItem)
   }
   return pokemonStats
+}
+
+function getPokemonGamesHeader() {
+  // Create the header for the games list
+  const pokemonGamesHeader = document.createElement('h4')
+  pokemonGamesHeader.classList.add('card--games--header')
+  pokemonGamesHeader.innerText = "Featured Games:"
+  return pokemonGamesHeader
 }
 
 function getPokemonGames(pokemon) {
