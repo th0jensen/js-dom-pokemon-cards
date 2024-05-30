@@ -38,10 +38,30 @@ function addPokemonCards() {
       pokemonStats.appendChild(pokemonStatItem)
     }
 
+    // Create the list where all the games will be shown
+    const pokemonGames = document.createElement('ul')
+    pokemonGames.classList.add('card--games')
+
+    // Create the header for the games list
+    const pokemonGamesHeader = document.createElement('h4')
+    pokemonGamesHeader.classList.add('card--games--header')
+    pokemonGamesHeader.innerText = "Featured Games:"
+
+    // Loop through the games and add them to the list
+    for (let k = 0; k < pokemon.game_indices.length; k++) {
+      const game = pokemon.game_indices[k]
+      const pokemonGamesItem = document.createElement('li')
+      const pokemonGamesItemCase = game.version.name[0].toUpperCase() + game.version.name.slice(1)
+      pokemonGamesItem.innerText = pokemonGamesItemCase
+      pokemonGames.appendChild(pokemonGamesItem)
+    }
+
     // Append all the items to the card
     card.appendChild(pokemonName)
     card.appendChild(pokemonCover)
     card.appendChild(pokemonStats)
+    card.appendChild(pokemonGamesHeader)
+    card.appendChild(pokemonGames)
 
     // Append the card to the HTML page
     cardsUL.appendChild(card)
