@@ -56,8 +56,8 @@ function getPokemonStats(pokemon) {
   pokemonStats.classList.add('card--text')
 
   // Loop through the stats and add them to the list
-  for (let j = 0; j < pokemon.stats.length; j++) {
-    const stat = pokemon.stats[j]
+  for (let i = 0; i < pokemon.stats.length; i++) {
+    const stat = pokemon.stats[i]
     const pokemonStatItem = document.createElement('li')
     pokemonStatItem.innerText = `${stat.stat.name.toUpperCase()}: ${stat.base_stat}`
     pokemonStats.appendChild(pokemonStatItem)
@@ -71,8 +71,8 @@ function getPokemonGames(pokemon) {
   pokemonGames.classList.add('card--games')
 
   // Loop through the games and add them to the list
-  for (let k = 0; k < pokemon.game_indices.length; k++) {
-    const game = pokemon.game_indices[k]
+  for (let i = 0; i < pokemon.game_indices.length; i++) {
+    const game = pokemon.game_indices[i]
     const pokemonGamesItem = document.createElement('li')
     const pokemonGamesItemCase = game.version.name[0].toUpperCase() + game.version.name.slice(1)
     pokemonGamesItem.innerText = pokemonGamesItemCase
