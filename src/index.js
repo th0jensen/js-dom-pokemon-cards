@@ -16,8 +16,7 @@ function getPokemonName(pokemon) {
 }
 
 function getPokemonCovers(pokemon) {
-    // Get all the covers and store them in an array
-    const pokemonCovers = [
+    const pokemonCoversArray = [
         pokemon.sprites.other['official-artwork'].front_default,
         pokemon.sprites.front_default,
         pokemon.sprites.front_shiny,
@@ -28,51 +27,63 @@ function getPokemonCovers(pokemon) {
     const imageAndButtons = document.createElement('div')
     imageAndButtons.classList.add('image-wrapper')
 
-    // Create button that moves forwards
-    const forwardsButton = document.createElement('button')
-    forwardsButton.classList.add('button')
-    forwardsButton.setAttribute('id', 'forwards')
-    forwardsButton.innerText = '→'
+    // Create the image
+    const pokemonCoverImage = document.createElement('img')
+    pokemonCoverImage.classList.add('card--img')
+    pokemonCoverImage.width = 256
+    pokemonCoverImage.height = 256
+    // Set the default image to be pokemonCoversArray[0] (official artwork)
+    pokemonCoverImage.src = pokemonCoversArray[state.coverIndex]
 
+    // Append all the elements to the containing div
+    imageAndButtons.appendChild(
+        createBackwardsButton(pokemonCoversArray, pokemonCoverImage)
+    )
+    imageAndButtons.appendChild(pokemonCoverImage)
+    imageAndButtons.appendChild(
+        createForwardsButton(pokemonCoversArray, pokemonCoverImage)
+    )
+    return imageAndButtons
+}
+
+function createBackwardsButton(pokemonCoversArray, pokemonImageElement) {
     // Create button that moves backwards
     const backwardsButton = document.createElement('button')
     backwardsButton.classList.add('button')
     backwardsButton.setAttribute('id', 'backwards')
     backwardsButton.innerText = '←'
 
-    // Create the image
-    const pokemonCover = document.createElement('img')
-    pokemonCover.classList.add('card--img')
-    pokemonCover.width = 256
-    pokemonCover.height = 256
-    // Set the default image to be pokemonCovers[0] (official artwork)
-    pokemonCover.src = pokemonCovers[state.coverIndex]
-
-    forwardsButton.addEventListener('click', () => {
-        state.coverIndex += 1
-        // If the value exceeds the array
-        // we want to loop back to the start
-        if (state.coverIndex > pokemonCovers.length - 1) {
-            state.coverIndex = 0
-        }
-        pokemonCover.src = pokemonCovers[state.coverIndex]
-    })
-
     backwardsButton.addEventListener('click', () => {
         state.coverIndex -= 1
         // If the value is negative we want to
         // loop back to the end of the array
         if (state.coverIndex < 0) {
-            state.coverIndex = pokemonCovers.length - 1
+            state.coverIndex = pokemonCoversArray.length - 1
         }
-        pokemonCover.src = pokemonCovers[state.coverIndex]
+        pokemonImageElement.src = pokemonCoversArray[state.coverIndex]
     })
 
-    // Append all the elements to the containing div
-    imageAndButtons.appendChild(backwardsButton)
-    imageAndButtons.appendChild(pokemonCover)
-    imageAndButtons.appendChild(forwardsButton)
-    return imageAndButtons
+    return backwardsButton
+}
+
+function createForwardsButton(pokemonCoversArray, pokemonImageElement) {
+    // Create button that moves forwards
+    const forwardsButton = document.createElement('button')
+    forwardsButton.classList.add('button')
+    forwardsButton.setAttribute('id', 'forwards')
+    forwardsButton.innerText = '→'
+
+    forwardsButton.addEventListener('click', () => {
+        state.coverIndex += 1
+        // If the value exceeds the array
+        // we want to loop back to the start
+        if (state.coverIndex > pokemonCoversArray.length - 1) {
+            state.coverIndex = 0
+        }
+        pokemonImageElement.src = pokemonCoversArray[state.coverIndex]
+    })
+
+    return forwardsButton
 }
 
 function getPokemonStats(pokemon) {
@@ -94,12 +105,6 @@ function getPokemonGames(pokemon) {
     // Create the containing div
     const pokemonGames = document.createElement('div')
 
-    // Create the header for the games list
-    const pokemonGamesHeader = document.createElement('h4')
-    pokemonGamesHeader.classList.add('card--games--header')
-    pokemonGamesHeader.innerText = 'Featured Games:'
-    pokemonGames.appendChild(pokemonGamesHeader)
-
     // Create the list where all the games will be shown
     const pokemonGamesList = document.createElement('ul')
     pokemonGamesList.classList.add('card--games')
@@ -113,8 +118,18 @@ function getPokemonGames(pokemon) {
         pokemonGamesItem.innerText = pokemonGamesItemCase
         pokemonGamesList.appendChild(pokemonGamesItem)
     }
+    // Append the header
+    pokemonGames.appendChild(createPokemonGamesHeader())
     pokemonGames.appendChild(pokemonGamesList)
     return pokemonGames
+}
+
+function createPokemonGamesHeader() {
+    // Create the header for the games list
+    const pokemonGamesHeader = document.createElement('h4')
+    pokemonGamesHeader.classList.add('card--games--header')
+    pokemonGamesHeader.innerText = 'Featured Games:'
+    return pokemonGamesHeader
 }
 
 // Render the state
