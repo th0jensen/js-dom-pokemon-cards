@@ -81,10 +81,31 @@ h2 {
     border-radius: 5px;
 }
 
-
 .card--img {
+    grid-column: 2 / span 1;
     display: block;
     margin: 0 auto;
 
     box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+}
+
+.image-wrapper {
+    display: grid;
+    grid-template-columns: auto 256px auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.button {
+    padding: 20px;
+    background-color: transparent;
+    border: none;
+}
+
+#forwards {
+    grid-column: 3 / -1;
+}
+
+#backwards {
+    grid-column: 1 / span 1;
 }
