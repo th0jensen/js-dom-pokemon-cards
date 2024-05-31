@@ -1,7 +1,7 @@
 const state = {
     pokemonData: data,
     coverIndex: 0,
-    searchFilter: 'Bulbasaur',
+    searchFilter: '',
 }
 
 function getPokemonName(pokemon) {
@@ -132,14 +132,34 @@ function createPokemonGamesHeader() {
     return pokemonGamesHeader
 }
 
+function searchBar() {
+    const cardsUL = document.querySelector('ul')
+    const searchBar = document.createElement('input')
+    searchBar.setAttribute('id', 'searchBar')
+    searchBar.placeholder = 'Search Pokemon'
+
+    searchBar.addEventListener('input', (event) => {
+        const value = event.target.value
+        state.searchFilter = value.toLowerCase()
+        renderPokemonCards()
+    })
+
+    document.body.insertBefore(searchBar, cardsUL)
+}
+
 // Render the state
 function renderPokemonCards() {
     // Grab the entry point on the HTML
     const cardsUL = document.querySelector('.cards')
+    cardsUL.innerHTML = ''
+
+    const filteredPokemon = state.pokemonData.filter((pokemon) =>
+        pokemon.name.toLowerCase().includes(state.searchFilter.toLowerCase())
+    )
 
     // Loop through all of the entries in data.js
-    for (let i = 0; i < state.pokemonData.length; i++) {
-        const pokemon = state.pokemonData[i]
+    for (let i = 0; i < filteredPokemon.length; i++) {
+        const pokemon = filteredPokemon[i]
 
         // Create the list entry (card)
         const card = document.createElement('li')
@@ -163,4 +183,6 @@ function renderPokemonCards() {
     }
 }
 
+// Initialise the search bar and Pokemon cards
+searchBar()
 renderPokemonCards()

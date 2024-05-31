@@ -109,3 +109,11 @@ h2 {
 #backwards {
     grid-column: 1 / span 1;
 }
+
+#searchBar {
+    margin: 3rem;
+    padding: 1rem;
+    border-radius: 10px;
+    border: solid 1px black;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
