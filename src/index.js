@@ -12,6 +12,7 @@ function getPokemonName(pokemon) {
     const pokemonNameCase =
         pokemon.name[0].toUpperCase() + pokemon.name.slice(1)
     pokemonName.innerText = pokemonNameCase
+
     return pokemonName
 }
 
@@ -24,26 +25,27 @@ function getPokemonCovers(pokemon) {
     ]
 
     // Create the containing div
-    const imageAndButtons = document.createElement('div')
-    imageAndButtons.classList.add('image-wrapper')
+    const pokemonCoverContainer = document.createElement('div')
+    pokemonCoverContainer.classList.add('image-wrapper')
 
     // Create the image
     const pokemonCoverImage = document.createElement('img')
     pokemonCoverImage.classList.add('card--img')
     pokemonCoverImage.width = 256
     pokemonCoverImage.height = 256
-    // Set the default image to be pokemonCoversArray[0] (official artwork)
+    // Set the default image to the official artwork
     pokemonCoverImage.src = pokemonCoversArray[state.coverIndex]
 
     // Append all the elements to the containing div
-    imageAndButtons.appendChild(
+    pokemonCoverContainer.appendChild(
         createBackwardsButton(pokemonCoversArray, pokemonCoverImage)
     )
-    imageAndButtons.appendChild(pokemonCoverImage)
-    imageAndButtons.appendChild(
+    pokemonCoverContainer.appendChild(pokemonCoverImage)
+    pokemonCoverContainer.appendChild(
         createForwardsButton(pokemonCoversArray, pokemonCoverImage)
     )
-    return imageAndButtons
+
+    return pokemonCoverContainer
 }
 
 function createBackwardsButton(pokemonCoversArray, pokemonImageElement) {
@@ -93,11 +95,14 @@ function getPokemonStats(pokemon) {
 
     // Loop through the stats and add them to the list
     for (let i = 0; i < pokemon.stats.length; i++) {
-        const stat = pokemon.stats[i]
-        const pokemonStatItem = document.createElement('li')
-        pokemonStatItem.innerText = `${stat.stat.name.toUpperCase()}: ${stat.base_stat}`
-        pokemonStats.appendChild(pokemonStatItem)
+        const statItem = pokemon.stats[i]
+        const pokemonListItem = document.createElement('li')
+        pokemonListItem.innerText = `
+            ${statItem.stat.name.toUpperCase()}: ${statItem.base_stat}
+        `
+        pokemonStats.appendChild(pokemonListItem)
     }
+
     return pokemonStats
 }
 
@@ -118,9 +123,11 @@ function getPokemonGames(pokemon) {
         pokemonGamesItem.innerText = pokemonGamesItemCase
         pokemonGamesList.appendChild(pokemonGamesItem)
     }
+
     // Append the header
     pokemonGames.appendChild(createPokemonGamesHeader())
     pokemonGames.appendChild(pokemonGamesList)
+
     return pokemonGames
 }
 
@@ -129,21 +136,26 @@ function createPokemonGamesHeader() {
     const pokemonGamesHeader = document.createElement('h4')
     pokemonGamesHeader.classList.add('card--games--header')
     pokemonGamesHeader.innerText = 'Featured Games:'
+
     return pokemonGamesHeader
 }
 
-function searchBar() {
-    const cardsUL = document.querySelector('ul')
+function createSearchBar() {
+    // Create the searchBar
     const searchBar = document.createElement('input')
     searchBar.setAttribute('id', 'searchBar')
-    searchBar.placeholder = 'Search Pokemon'
+    searchBar.placeholder = 'Search Pokemon...'
 
+    // Match the value of the searchBar to the searchFilter
+    // every time it is updated, render the state to update
     searchBar.addEventListener('input', (event) => {
         const value = event.target.value
         state.searchFilter = value.toLowerCase()
         renderPokemonCards()
     })
 
+    // Insert the search bar at the top of the page
+    const cardsUL = document.querySelector('ul')
     document.body.insertBefore(searchBar, cardsUL)
 }
 
@@ -151,13 +163,16 @@ function searchBar() {
 function renderPokemonCards() {
     // Grab the entry point on the HTML
     const cardsUL = document.querySelector('.cards')
+
+    // Clear the HTML on every rerender
     cardsUL.innerHTML = ''
 
+    // Filter the pokemon by the state.searchFilter string
     const filteredPokemon = state.pokemonData.filter((pokemon) =>
         pokemon.name.toLowerCase().includes(state.searchFilter.toLowerCase())
     )
 
-    // Loop through all of the entries in data.js
+    // Loop through all of the matching entries
     for (let i = 0; i < filteredPokemon.length; i++) {
         const pokemon = filteredPokemon[i]
 
@@ -165,7 +180,7 @@ function renderPokemonCards() {
         const card = document.createElement('li')
         card.classList.add('card')
 
-        // Define the functions in an array
+        // Construct the queue for rendering
         const functions = [
             getPokemonName,
             getPokemonCovers,
@@ -184,5 +199,7 @@ function renderPokemonCards() {
 }
 
 // Initialise the search bar and Pokemon cards
-searchBar()
-renderPokemonCards()
+document.addEventListener('DOMContentLoaded', () => {
+    createSearchBar()
+    renderPokemonCards()
+})
