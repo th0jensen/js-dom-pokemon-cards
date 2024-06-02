@@ -150,7 +150,7 @@ function createSearchBar() {
     // every time it is updated, render the state to update
     searchBar.addEventListener('input', (event) => {
         const value = event.target.value
-        state.searchFilter = value.toLowerCase()
+        state.searchFilter = value.toUpperCase()
         renderPokemonCards()
     })
 
@@ -169,7 +169,7 @@ function renderPokemonCards() {
 
     // Filter the pokemon by the state.searchFilter string
     const filteredPokemon = state.pokemonData.filter((pokemon) =>
-        pokemon.name.toLowerCase().includes(state.searchFilter.toLowerCase())
+        pokemon.name.toUpperCase().includes(state.searchFilter.toUpperCase())
     )
 
     // Loop through all of the matching entries
